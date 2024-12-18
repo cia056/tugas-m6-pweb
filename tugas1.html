@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Pemesanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+        }
+        .form-container {
+            width: 700px; 
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group, .form-group-inline {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .form-group label, .form-group-inline label {
+            width: 180px; 
+            margin-right: 10px;
+            text-align: right;
+        }
+        input[type="text"], input[type="date"], select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group-inline input[type="text"] {
+            width: 100%; 
+        }
+        .form-group-inline span {
+            margin-left: 5px; 
+        }
+        .form-group-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group-checkbox label {
+            width: 180px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        .form-group-checkbox input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .save-button {
+            background-color: #007bff;
+            color: white;
+        }
+        .cancel-button {
+            background-color: #ffc107;
+            color: white;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Form Data Pemesanan</h2>
+        <form id="form-pemesanan">
+            <div class="form-group">
+                <label for="id-pemesanan">Id Pemesanan:</label>
+                <input type="text" id="id-pemesanan" name="id-pemesanan" value="1" readonly>
+            </div>
+            <div class="form-group">
+                <label for="nama-pemesan">Nama Pemesan:</label>
+                <input type="text" id="nama-pemesan" name="nama-pemesan" placeholder="Nama Pemesan" required>
+            </div>
+            <div class="form-group">
+                <label for="nomor-identitas">Nomor Identitas:</label>
+                <input type="text" id="nomor-identitas" name="nomor-identitas" placeholder="Nomor Identitas" required>
+            </div>
+            <div class="form-group">
+                <label for="tipe-kamar">Tipe Kamar:</label>
+                <select id="tipe-kamar" name="tipe-kamar" required>
+                    <option value="">--Pilih--</option>
+                    <option value="standard">Standard</option>
+                    <option value="deluxe">Deluxe</option>
+                    <option value="suite">Suite</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="harga">Harga:</label>
+                <input type="text" id="harga" name="harga" placeholder="Harga" readonly>
+            </div>
+            <div class="form-group">
+                <label for="tanggal-pesan">Tanggal Pesan:</label>
+                <input type="date" id="tanggal-pesan" name="tanggal-pesan" required>
+            </div>
+            <div class="form-group-inline">
+                <label for="durasi-menginap">Durasi Menginap:</label>
+                <input type="text" id="durasi-menginap" name="durasi-menginap" placeholder="Durasi" required>
+                <span>Hari</span>
+            </div>
+            <div class="form-group-checkbox">
+                <label for="breakfast">Termasuk Breakfast:</label>
+                <input type="checkbox" id="breakfast" name="breakfast">
+            </div>
+            <div class="form-group">
+                <label for="total-bayar">Total Bayar:</label>
+                <input type="text" id="total-bayar" name="total-bayar" placeholder="Total Bayar" readonly>
+            </div>
+            <div class="button-container">
+                <button type="button" class="save-button" id="calculate-total">Simpan</button>
+                <button type="reset" class="cancel-button">Batal</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#calculate-total").click(function () {
+                const nomorIdentitas = $("#nomor-identitas").val();
+                if (nomorIdentitas.length !== 16) {
+                    alert("Isian salah, harus 16 digit");
+                    return;
+                }
+
+                const tipeKamar = $("#tipe-kamar").val();
+                const durasiMenginap = parseInt($("#durasi-menginap").val(), 10) || 0;
+                const isBreakfast = $("#breakfast").is(":checked");
+
+                let hargaPerMalam;
+                if (tipeKamar === "standard") hargaPerMalam = 500000;
+                else if (tipeKamar === "deluxe") hargaPerMalam = 750000;
+                else if (tipeKamar === "suite") hargaPerMalam = 1000000;
+                else {
+                    alert("Pilih tipe kamar terlebih dahulu");
+                    return;
+                }
+
+                let total = hargaPerMalam * durasiMenginap;
+
+                if (durasiMenginap > 3) {
+                    total *= 0.9; // Diskon 10%
+                }
+
+                if (isBreakfast) {
+                    total += 80000; // Tambahan biaya breakfast
+                }
+
+                $("#total-bayar").val(total.toLocaleString("id-ID", { style: "currency", currency: "IDR" }));
+
+                // Tampilkan resume pemesanan
+                alert(`
+                    Resume Pemesanan:
+                    Nama: ${$("#nama-pemesan").val()}
+                    Tipe Kamar: ${tipeKamar}
+                    Durasi Menginap: ${durasiMenginap} hari
+                    Total Bayar: ${$("#total-bayar").val()}
+                `);
+            });
+        });
+    </script>
+</body>
+</html>

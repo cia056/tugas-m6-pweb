@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show and Hide Image with jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        img {
+            max-width: 300px;
+            display: none; /* Gambar tersembunyi secara default */
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Show and Hide Image Example</h1>
+    <button id="showButton">Show Image</button>
+    <button id="hideButton">Hide Image</button>
+    <button id="toggleButton">Toggle Image</button>
+    <br>
+    <img id="image" src="https://via.placeholder.com/300" alt="Example Image">
+
+    <script>
+        $(document).ready(function () {
+            $("#showButton").click(function () {
+                $("#image").fadeIn(); // Menampilkan gambar dengan animasi
+            });
+
+            $("#hideButton").click(function () {
+                $("#image").fadeOut(); // Menyembunyikan gambar dengan animasi
+            });
+
+            $("#toggleButton").click(function () {
+                $("#image").fadeToggle(); // Menampilkan atau menyembunyikan gambar secara bergantian
+            });
+        });
+    </script>
+</body>
+</html>

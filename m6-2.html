@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JQuery</title>
+  <!-- File JS -->
+  <script src="js/jquery-3.7.1.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(".fadeout").click(function () {
+        $("img").fadeOut();
+      });
+      $(".fadein").click(function () {
+        $("img").fadeIn();
+      });
+      $(".fadetoggle").click(function () {
+        $("img").fadeToggle();
+        $("img").css("background-color", "orange");
+      });
+      $(".fadeto").click(function () {
+        $("img").fadeTo("slow", 0.5);
+        $("img").css("background-color", "lightpink");
+      });
+    });
+  </script>
+</head>
+<body>
+  <button class="fadeout" style="background-color: #add8e6;">Fade Out</button>
+  <button class="fadein" style="background-color: #eebfff;">Fade In</button>
+  <button class="fadetoggle" style="background-color: #ffa500;">Fade Toggle</button>
+  <button class="fadeto" style="background-color: #ffb6c1;">Fade To</button>
+  <br />
+  <img src="../modul1/gambar/logo11.png" alt="Logo" />
+</body>
+</html>
